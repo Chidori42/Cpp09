@@ -1,24 +1,23 @@
-CC = c++ -Wall -Wextra -Werror -std=c++98
-
-SRCS = main.cpp\
-		BitcoinExchange.cpp
+CFLAGS = -Wall -Wextra -Werror #-std=c++98
+SRCS =  main.cpp\
+ 		# BitcoinExchange.cpp
 
 NAME = btc
 
-OBJS = $(SRCS:.cpp=.o)
+OBJECTS = $(SRCS:.cpp=.o)
 
 RM = rm -f
 
 all: $(NAME)
 
-%.o : %.cpp
-	$(CC) -o $(NAME) $(OBJS)
+%.o: %.cpp 
+	c++ $(CFLAGS) -c -o $@ $<
 
-$(NAME): $(OBJS)
-	$(CC) -o $(NAME) $(OBJS)
+$(NAME): $(OBJECTS)
+	c++ $(CFLAGS) -o $(NAME) $(OBJECTS)
 
 clean:
-	$(RM) $(OBJS)
+	$(RM) $(OBJECTS)
 
 fclean: clean
 	$(RM) $(NAME)
