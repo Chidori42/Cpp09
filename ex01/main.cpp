@@ -10,22 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "BitcoinExchange.hpp"
+#include "RPN.hpp"
 
 int main(int ac, char **av){
     try{
-        Data myData;
+        RPN OBJ;
         if (ac != 2)
-            throw "Error: could not open file.";
-        std::string inputFile = av[1];
-        std::ifstream server("data.csv");
-        if (!server)
-            throw "Error: could not open file.";
-        myData.setArray(server);
-        myData.compareData(inputFile);
-        
+            throw "Invalid Number Of Parameters";
+        std::string input = av[1];
+        OBJ.parsInput(input);
+        int res = OBJ.clculateValue(input);
+        std::cout << res << std::endl;
     }catch (const char *str){
-        std::cout << str << std::endl;
+        std::cout << "Error: " << str << std::endl;
     }
 }
         

@@ -1,8 +1,8 @@
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 SRCS =  main.cpp\
- 		BitcoinExchange.cpp\
+		RPN.cpp
 
-NAME = btc
+NAME = RPN
 
 OBJECTS = $(SRCS:.cpp=.o)
 
@@ -10,7 +10,7 @@ RM = rm -f
 
 all: $(NAME)
 
-%.o: %.cpp BitcoinExchange.hpp
+%.o: %.cpp RPN.hpp
 	c++ $(CFLAGS) -c -o $@ $<
 
 $(NAME): $(OBJECTS)
