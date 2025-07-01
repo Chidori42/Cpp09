@@ -1,6 +1,6 @@
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 SRCS =  main.cpp\
-		# PmergeMe.hpp
+		PmergeMe.cpp
 
 NAME = PmergeMe
 
@@ -10,7 +10,7 @@ RM = rm -f
 
 all: $(NAME)
 
-%.o: %.cpp #PmergeMe.hpp
+%.o: %.cpp PmergeMe.hpp
 	c++ $(CFLAGS) -c -o $@ $<
 
 $(NAME): $(OBJECTS)
