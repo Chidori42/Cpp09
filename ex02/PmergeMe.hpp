@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <deque>
 #include <string>
 #include <algorithm>
 #include <sstream>
@@ -13,19 +14,43 @@
 
 class PmergeMe{
     private:
-        std::vector<std::pair<long, long> > array;
+        std::vector<std::pair<long, long> > v_array;
+        std::deque<std::pair<long, long> > d_array;
+        int size = 0;
     public:
         PmergeMe();
         ~PmergeMe();
 
-        std::vector<std::pair<long, long> > getArray() const;
-        void insertSort(std::vector<int>& , const std::vector<int>& );
-        bool checkInteger(std::vector<std::string>, int &);
-        void sortPairs(void);
-        void sortLargElements(int);
+        int getSize() const;
+        void setSize(int size);
+        int getIndex(int k);
         void Desplaytime(long, std::size_t);
-        void DesplayNumbers(std::vector<int>, std::string , int );
-        void DesplayNumbers(std::string , int );
-        void insertSort(std::vector<int>& , std::vector<int>& );
+        void swapPairs(std::pair<long, long> &, std::pair<long, long> &);
+        
+        std::vector<std::pair<long, long> > getVarray() const;
+        bool checkInteger(std::vector<std::string>);
+        void sortVectorPairs(void);
+        void sortVectorLargElements(int);
+        void insertVectorNumber(std::vector<int>&, const std::vector<int>&, int);
+        void DesplayNumbers(std::vector<int>, std::string);
+        void DesplayNumbers(std::string);
+        void vectorInsertSort(std::vector<int>& , std::vector<int>& );
+        std::vector<int> getVectorLowest();
+        std::vector<int> getVectorGreaters();
+        std::vector<int> vectorJacobsthal(int);
+        void vectorGenerate(PmergeMe &obj);
+
+
+        std::deque<std::pair<long, long> > getDarray() const;
+        void dequeinsertSort(std::deque<int>& , const std::deque<int>& );
+        void sortDequePairs(void);
+        void sortDequeLargElements(int);
+        void insertDequeNumber(std::deque<int>&, const std::deque<int>&, int);
+        void dequeInsertSort(std::deque<int>& , std::deque<int>& );
+        std::deque<int> getDequeLowest();
+        std::deque<int> getDequeGreaters();
+        std::deque<int> dequeJacobsthal(int);
+        void dequeGenerate(PmergeMe &obj);
+        
 };
 #endif
