@@ -110,20 +110,39 @@ void PmergeMe::merge(int left, int middel, int right){
     int j = 0;
     int k = left;
 
-    while (){
-        
+    while (i < number1 && j < number2){
+        if (leftV[i] <= rightV[j])
+        {
+            this->v_array[k] =  leftV[i];
+            i++;
+        }else{
+            this->v_array[k] =  rightV[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < number1){
+        this->v_array[k] =  leftV[i];
+        i++;
+        k++;
+    }
+    while (j < number2){
+        this->v_array[k] =  rightV[j];
+        j++;
+        k++;
     }
 }
 
-void PmergeMe::sortVectorLargElements(int left, int right){
+void PmergeMe::mergeSort(int left, int right){
     if (left <= right){
         return ;
     }
 
     int middel = left + (right - left) / 2;
 
-    sortVectorLargElements(left, middel);
-    sortVectorLargElements(middel + 1, right);
+    mergeSort(left, middel);
+    mergeSort(middel + 1, right);
     merge(left, middel, right);
 }
 

@@ -38,6 +38,8 @@ class PmergeMe{
         std::vector<int> getVectorLowest();
         std::vector<int> getVectorGreaters();
         std::vector<int> vectorJacobsthal(int);
+        void merge(int, int, int);
+        void mergeSort(int, int);
         void vectorGenerate(PmergeMe &obj);
 
 
