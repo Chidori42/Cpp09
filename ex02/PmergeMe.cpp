@@ -94,18 +94,37 @@ void PmergeMe::swapPairs(std::pair<long, long> &p1, std::pair<long, long> &p2){
     p2 = tmp;
 }
 
-void PmergeMe::sortVectorLargElements(int n){
-    if (n <= 1){
+void PmergeMe::merge(int left, int middel, int right){
+    int number1 = middel - left + 1;
+    int number2 = right - middel;
+
+    std::vector<int> leftV(number1), rightV(number2);
+    for (int i = 0; i < number1; i++){
+        leftV[i] = this->v_array[left + i];
+    }
+    for (int i = 0; i < number2; i++){
+        rightV[i] = this->v_array[middel + 1+ i];
+    }
+
+    int i = 0;
+    int j = 0;
+    int k = left;
+
+    while (){
+        
+    }
+}
+
+void PmergeMe::sortVectorLargElements(int left, int right){
+    if (left <= right){
         return ;
     }
 
-    for (size_t i = 0; i + 1 < this->v_array.size(); ++i) {
-        if (this->v_array[i].first > this->v_array[i + 1].first) {
-            swapPairs(this->v_array[i], this->v_array[i + 1]);
-        }
-    }
+    int middel = left + (right - left) / 2;
 
-    sortVectorLargElements(n - 1);
+    sortVectorLargElements(left, middel);
+    sortVectorLargElements(middel + 1, right);
+    merge(left, middel, right);
 }
 
 void binaryInsert(std::vector<int>& main_chain, int value) {
@@ -217,8 +236,6 @@ void PmergeMe::vectorGenerate(PmergeMe &obj){
     obj.DesplayNumbers(largeNumbers, "After");
     Desplaytime(duration_us, getSize());
 }
-
-
 
 
 
