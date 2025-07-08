@@ -16,7 +16,7 @@ class PmergeMe{
     private:
         std::vector<std::pair<long, long> > v_array;
         std::deque<std::pair<long, long> > d_array;
-        int size = 0;
+        int size;
     public:
         PmergeMe();
         ~PmergeMe();
@@ -30,7 +30,6 @@ class PmergeMe{
         std::vector<std::pair<long, long> > getVarray() const;
         bool checkInteger(std::vector<std::string>);
         void sortVectorPairs(void);
-        void sortVectorLargElements(int);
         void insertVectorNumber(std::vector<int>&, const std::vector<int>&, int);
         void DesplayNumbers(std::vector<int>, std::string);
         void DesplayNumbers(std::string);
@@ -38,15 +37,16 @@ class PmergeMe{
         std::vector<int> getVectorLowest();
         std::vector<int> getVectorGreaters();
         std::vector<int> vectorJacobsthal(int);
-        void merge(int, int, int);
-        void mergeSort(int, int);
+        void vectorMerge(int, int, int);
+        void vectorMergeSort(int, int);
         void vectorGenerate(PmergeMe &obj);
 
 
         std::deque<std::pair<long, long> > getDarray() const;
         void dequeinsertSort(std::deque<int>& , const std::deque<int>& );
         void sortDequePairs(void);
-        void sortDequeLargElements(int);
+        void dequeMerge(int left, int middel, int right);
+        void dequeMergeSort(int left, int right);
         void insertDequeNumber(std::deque<int>&, const std::deque<int>&, int);
         void dequeInsertSort(std::deque<int>& , std::deque<int>& );
         std::deque<int> getDequeLowest();

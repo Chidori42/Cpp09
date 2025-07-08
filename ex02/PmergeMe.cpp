@@ -1,5 +1,6 @@
 #include "PmergeMe.hpp"
 
+
 PmergeMe::PmergeMe(){
 
 }
@@ -94,16 +95,16 @@ void PmergeMe::swapPairs(std::pair<long, long> &p1, std::pair<long, long> &p2){
     p2 = tmp;
 }
 
-void PmergeMe::merge(int left, int middel, int right){
+void PmergeMe::vectorMerge(int left, int middel, int right){
     int number1 = middel - left + 1;
     int number2 = right - middel;
 
-    std::vector<int> leftV(number1), rightV(number2);
+    std::vector<std::pair<long, long> > leftV(number1), rightV(number2);
     for (int i = 0; i < number1; i++){
         leftV[i] = this->v_array[left + i];
     }
     for (int i = 0; i < number2; i++){
-        rightV[i] = this->v_array[middel + 1+ i];
+        rightV[i] = this->v_array[middel + 1 + i];
     }
 
     int i = 0;
@@ -134,16 +135,16 @@ void PmergeMe::merge(int left, int middel, int right){
     }
 }
 
-void PmergeMe::mergeSort(int left, int right){
-    if (left <= right){
+void PmergeMe::vectorMergeSort(int left, int right){
+    if (left >= right){
         return ;
     }
 
     int middel = left + (right - left) / 2;
 
-    mergeSort(left, middel);
-    mergeSort(middel + 1, right);
-    merge(left, middel, right);
+    vectorMergeSort(left, middel);
+    vectorMergeSort(middel + 1, right);
+    vectorMerge(left, middel, right);
 }
 
 void binaryInsert(std::vector<int>& main_chain, int value) {
@@ -215,7 +216,7 @@ void PmergeMe::DesplayNumbers(std::string str){
     else{
         int i;
         std::cout << str << ":";
-        for (i = 0; i < 2; i++){
+        for (i = 0; i <= 2; i++){
             std::cout << " " << getVarray()[i].first;
             if (getVarray()[i].second != LONG_MAX){
                 std::cout << " " << getVarray()[i].second;
@@ -246,7 +247,7 @@ void PmergeMe::DesplayNumbers(std::vector<int> arr, std::string str){
 void PmergeMe::vectorGenerate(PmergeMe &obj){
     clock_t start = clock(); 
     obj.sortVectorPairs();
-    obj.sortVectorLargElements(obj.getVarray().size());
+    obj.vectorMergeSort(0, obj.getVarray().size() - 1);
     std::vector<int> largeNumbers = getVectorGreaters();
     std::vector<int> LowNumbers = getVectorLowest();
     obj.vectorInsertSort(largeNumbers, LowNumbers);
@@ -255,6 +256,9 @@ void PmergeMe::vectorGenerate(PmergeMe &obj){
     obj.DesplayNumbers(largeNumbers, "After");
     Desplaytime(duration_us, getSize());
 }
+
+
+
 
 
 
@@ -286,18 +290,56 @@ void PmergeMe::sortDequePairs(void){
     }
 
 }
-void PmergeMe::sortDequeLargElements(int n){
-    if (n <= 1){
+void PmergeMe::dequeMerge(int left, int middel, int right){
+    int number1 = middel - left + 1;
+    int number2 = right - middel;
+
+    std::deque<std::pair<long, long> > leftV(number1), rightV(number2);
+    for (int i = 0; i < number1; i++){
+        leftV[i] = this->d_array[left + i];
+    }
+    for (int i = 0; i < number2; i++){
+        rightV[i] = this->d_array[middel + 1 + i];
+    }
+
+    int i = 0;
+    int j = 0;
+    int k = left;
+
+    while (i < number1 && j < number2){
+        if (leftV[i] <= rightV[j])
+        {
+            this->d_array[k] =  leftV[i];
+            i++;
+        }else{
+            this->d_array[k] =  rightV[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < number1){
+        this->d_array[k] =  leftV[i];
+        i++;
+        k++;
+    }
+    while (j < number2){
+        this->d_array[k] =  rightV[j];
+        j++;
+        k++;
+    }
+}
+
+void PmergeMe::dequeMergeSort(int left, int right){
+    if (left >= right){
         return ;
     }
 
-    for (size_t i = 0; i + 1 < this->d_array.size(); ++i) {
-        if (this->d_array[i].first > this->d_array[i + 1].first) {
-            swapPairs(this->d_array[i], this->d_array[i + 1]);
-        }
-    }
+    int middel = left + (right - left) / 2;
 
-    sortDequeLargElements(n - 1);
+    dequeMergeSort(left, middel);
+    dequeMergeSort(middel + 1, right);
+    dequeMerge(left, middel, right);
 }
 void PmergeMe::insertDequeNumber(std::deque<int> &main_chain, const std::deque<int> &pend_chain, int index){
     int value = pend_chain[index];
@@ -361,7 +403,7 @@ std::deque<int> PmergeMe::dequeJacobsthal(int size){
 void PmergeMe::dequeGenerate(PmergeMe &obj){
     clock_t start = clock(); 
     obj.sortDequePairs();
-    obj.sortDequeLargElements(obj.getDarray().size());
+    obj.dequeMergeSort(0, obj.getDarray().size() - 1);
     std::deque<int> largeNumbers = getDequeGreaters();
     std::deque<int> LowNumbers = getDequeLowest();
     obj.dequeinsertSort(largeNumbers, LowNumbers);
