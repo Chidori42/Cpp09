@@ -65,9 +65,16 @@ void Data::DisplayData(std::string date, double amount, double res){
 }
 void Data::compareData(std::string inputFile){
     std::ifstream File(inputFile.c_str());
-    if (!File)
-        throw "Error: could not open file.";
+    if (!File){
+        throw std::runtime_error("Error: could not open file.");
+    }
+    
     std::string line;
+    std::string header = "date | value";
+
+    if (!std::getline(File, line) || line != header){
+        throw std::runtime_error("Error: Invalid File Header");
+    }
     while (std::getline(File, line)){
         std::string date;
         double number;
@@ -105,6 +112,7 @@ std::size_t Data::getSize(){
 }
 void Data::setArray(std::ifstream &server){
     std::string line;
+
     while (std::getline(server, line)){
         std::stringstream ss(line);
         int count = 0;

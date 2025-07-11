@@ -16,13 +16,13 @@ int main(int ac, char **av){
     try{
         RPN OBJ;
         if (ac != 2)
-            throw "Invalid Number Of Parameters";
+            throw std::runtime_error("Invalid Number Of Parameters");
         std::string input = av[1];
         OBJ.parsInput(input);
         int res = OBJ.clculateValue(input);
         std::cout << res << std::endl;
-    }catch (const char *str){
-        std::cout << "Error: " << str << std::endl;
+    }catch (std::exception &e){
+        std::cerr << "Error: " << e.what() << std::endl;
     }
 }
         
