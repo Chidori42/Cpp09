@@ -7,6 +7,7 @@
 #include <string>
 #include <algorithm>
 #include <sstream>
+#include <iomanip>
 #include <utility>
 #include <climits>
 #include <ctime>
@@ -24,7 +25,7 @@ class PmergeMe{
         int getSize() const;
         void setSize(int size);
         int getIndex(int k);
-        void Desplaytime(long, std::size_t);
+        void Desplaytime(double, std::size_t);
         void swapPairs(std::pair<long, long> &, std::pair<long, long> &);
         
         std::vector<std::pair<long, long> > getVarray() const;
@@ -45,13 +46,13 @@ class PmergeMe{
         std::deque<std::pair<long, long> > getDarray() const;
         void dequeinsertSort(std::deque<int>& , const std::deque<int>& );
         void sortDequePairs(void);
-        void dequeMerge(int left, int middel, int right);
-        void dequeMergeSort(int left, int right);
         void insertDequeNumber(std::deque<int>&, const std::deque<int>&, int);
         void dequeInsertSort(std::deque<int>& , std::deque<int>& );
         std::deque<int> getDequeLowest();
         std::deque<int> getDequeGreaters();
         std::deque<int> dequeJacobsthal(int);
+        void dequeMerge(int, int, int);
+        void dequeMergeSort(int, int);
         void dequeGenerate(PmergeMe &obj);
         
 };

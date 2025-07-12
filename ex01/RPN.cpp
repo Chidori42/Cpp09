@@ -15,10 +15,10 @@ bool isoperator(char c){
 void RPN::parsInput(std::string &input){
     for (std::size_t i = 0; i < input.length(); i++){
         if (!isdigit(input[i]) && !isspace(input[i]) && !isoperator(input[i])){
-            throw "Invalid input";
+            throw std::runtime_error("Invalid input");
         }
         else if (isoperator(input[i]) && isoperator(input[i + 1])){
-            throw "Duplicate operator";
+            throw std::runtime_error("Duplicate operator");
         }
     }
 }
@@ -28,13 +28,14 @@ int RPN::clculateValue(std::string &input){
     char sep = ' ';
     while (std::getline(ss, str, sep)){
         if (str == "+" || str == "-" || str == "*" || str == "/"){
-            if (getMystack().size() < 2)
-                throw "Invalid Operands";
+            if (getMystack().size() < 2){
+                throw std::runtime_error("Invalid Operands");
+            }
+            double count = 0;
             char c = str[0];
-            int count = 0;
-            int first_element = mystack.top();
+            double first_element = mystack.top();
             mystack.pop();
-            int secound_element = mystack.top();
+            double secound_element = mystack.top();
             mystack.pop();
             switch (c){
                 case '+':
@@ -44,17 +45,22 @@ int RPN::clculateValue(std::string &input){
                 case '*':
                     count = secound_element * first_element; break;
                 case '/':
-                    if (first_element == 0)
-                        throw "Division by zero";
+                    if (first_element == 0){
+                        throw std::runtime_error("Division by zero");
+                    }
                     count = secound_element / first_element; break;
                 default:
-                    throw "Invalid syntax";
+                    throw std::runtime_error("Invalid syntax");
             }
+            if (count > INT_MAX || count < INT_MIN)
+                throw std::runtime_error("Overflow");
             mystack.push(count);
         }
         else
             mystack.push(std::atoi(str.c_str()));
     }
+    if (mystack.size() != 1)
+        throw std::runtime_error("Invalid syntax");
     int result = mystack.top();
     mystack.pop();
     return (result);

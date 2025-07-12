@@ -2,7 +2,7 @@
 
 
 PmergeMe::PmergeMe(){
-
+    this->size = 0;
 }
 PmergeMe::~PmergeMe(){
 
@@ -95,41 +95,40 @@ void PmergeMe::swapPairs(std::pair<long, long> &p1, std::pair<long, long> &p2){
     p2 = tmp;
 }
 
-void PmergeMe::vectorMerge(int left, int middel, int right){
-    int number1 = middel - left + 1;
-    int number2 = right - middel;
+void PmergeMe::vectorMerge(int left, int middle, int right) {
+    int number1 = middle - left + 1;
+    int number2 = right - middle;
 
     std::vector<std::pair<long, long> > leftV(number1), rightV(number2);
-    for (int i = 0; i < number1; i++){
+
+    for (int i = 0; i < number1; i++) {
         leftV[i] = this->v_array[left + i];
     }
-    for (int i = 0; i < number2; i++){
-        rightV[i] = this->v_array[middel + 1 + i];
+    for (int i = 0; i < number2; i++) {
+        rightV[i] = this->v_array[middle + 1 + i];
     }
 
-    int i = 0;
-    int j = 0;
-    int k = left;
+    int i = 0, j = 0, k = left;
 
-    while (i < number1 && j < number2){
-        if (leftV[i] <= rightV[j])
-        {
-            this->v_array[k] =  leftV[i];
+    while (i < number1 && j < number2) {
+        if (leftV[i].first <= rightV[j].first) {
+            this->v_array[k] = leftV[i];
             i++;
-        }else{
-            this->v_array[k] =  rightV[j];
+        } else {
+            this->v_array[k] = rightV[j];
             j++;
         }
         k++;
     }
 
-    while (i < number1){
-        this->v_array[k] =  leftV[i];
+    while (i < number1) {
+        this->v_array[k] = leftV[i];
         i++;
         k++;
     }
-    while (j < number2){
-        this->v_array[k] =  rightV[j];
+
+    while (j < number2) {
+        this->v_array[k] = rightV[j];
         j++;
         k++;
     }
@@ -139,7 +138,6 @@ void PmergeMe::vectorMergeSort(int left, int right){
     if (left >= right){
         return ;
     }
-
     int middel = left + (right - left) / 2;
 
     vectorMergeSort(left, middel);
@@ -195,9 +193,9 @@ void PmergeMe::vectorInsertSort(std::vector<int>& main_chain, std::vector<int>& 
     }
 }
 
-void PmergeMe::Desplaytime(long time, std::size_t size){ 
+void PmergeMe::Desplaytime(double time, std::size_t size){ 
     std::cout << "Time to process a range of " << size 
-        << " elements with std::[..] : " << time << " us" << std::endl;
+        << " elements with std::[..] : " << std::fixed << std::setprecision(2) << time << " us" << std::endl;
 }
 
 void PmergeMe::DesplayNumbers(std::string str){
@@ -247,12 +245,12 @@ void PmergeMe::DesplayNumbers(std::vector<int> arr, std::string str){
 void PmergeMe::vectorGenerate(PmergeMe &obj){
     clock_t start = clock(); 
     obj.sortVectorPairs();
-    obj.vectorMergeSort(0, obj.getVarray().size() - 1);
+    obj.dequeMergeSort(0, obj.getVarray().size() - 1);
     std::vector<int> largeNumbers = getVectorGreaters();
     std::vector<int> LowNumbers = getVectorLowest();
     obj.vectorInsertSort(largeNumbers, LowNumbers);
     clock_t end = clock();
-    double duration_us = (double)(end - start) * 1000000.0 / CLOCKS_PER_SEC;
+    double duration_us = static_cast<double>(end - start);
     obj.DesplayNumbers(largeNumbers, "After");
     Desplaytime(duration_us, getSize());
 }
@@ -290,51 +288,50 @@ void PmergeMe::sortDequePairs(void){
     }
 
 }
-void PmergeMe::dequeMerge(int left, int middel, int right){
-    int number1 = middel - left + 1;
-    int number2 = right - middel;
+void PmergeMe::dequeMerge(int left, int middle, int right) {
+    int number1 = middle - left + 1;
+    int number2 = right - middle;
 
     std::deque<std::pair<long, long> > leftV(number1), rightV(number2);
-    for (int i = 0; i < number1; i++){
-        leftV[i] = this->d_array[left + i];
+
+    for (int i = 0; i < number1; i++) {
+        leftV[i] = this->v_array[left + i];
     }
-    for (int i = 0; i < number2; i++){
-        rightV[i] = this->d_array[middel + 1 + i];
+    for (int i = 0; i < number2; i++) {
+        rightV[i] = this->v_array[middle + 1 + i];
     }
 
-    int i = 0;
-    int j = 0;
-    int k = left;
+    int i = 0, j = 0, k = left;
 
-    while (i < number1 && j < number2){
-        if (leftV[i] <= rightV[j])
-        {
-            this->d_array[k] =  leftV[i];
+    while (i < number1 && j < number2) {
+        if (leftV[i].first <= rightV[j].first) {
+            this->v_array[k] = leftV[i];
             i++;
-        }else{
-            this->d_array[k] =  rightV[j];
+        } else {
+            this->v_array[k] = rightV[j];
             j++;
         }
         k++;
     }
 
-    while (i < number1){
-        this->d_array[k] =  leftV[i];
+    while (i < number1) {
+        this->v_array[k] = leftV[i];
         i++;
         k++;
     }
-    while (j < number2){
-        this->d_array[k] =  rightV[j];
+
+    while (j < number2) {
+        this->v_array[k] = rightV[j];
         j++;
         k++;
     }
 }
 
+
 void PmergeMe::dequeMergeSort(int left, int right){
     if (left >= right){
         return ;
     }
-
     int middel = left + (right - left) / 2;
 
     dequeMergeSort(left, middel);
@@ -408,6 +405,6 @@ void PmergeMe::dequeGenerate(PmergeMe &obj){
     std::deque<int> LowNumbers = getDequeLowest();
     obj.dequeinsertSort(largeNumbers, LowNumbers);
     clock_t end = clock(); 
-    double duration_us = (double)(end - start) * 1000000.0 / CLOCKS_PER_SEC;
+    double duration_us = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000000;
     Desplaytime(duration_us, getSize());
 }
