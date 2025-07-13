@@ -14,6 +14,10 @@ class Data{
     public:
         Data();
         ~Data();
+        Data(const Data &other);
+
+        Data &operator=(const Data &other);
+
         
         std::map<std::string, double>getArray();
         void setArray(std::ifstream &server);

@@ -8,6 +8,20 @@ PmergeMe::~PmergeMe(){
 
 }
 
+PmergeMe::PmergeMe(const PmergeMe &other){
+    this->v_array = other.v_array;
+    this->d_array = other.d_array;
+}
+
+PmergeMe &PmergeMe::operator=(const PmergeMe &other)
+{
+    if (this != &other){
+        this->v_array = other.v_array;
+        this->d_array = other.d_array;
+    }
+    return (*this);
+}
+
 int PmergeMe::getSize() const{
     return (this->size);
 }

@@ -21,6 +21,9 @@ class PmergeMe{
     public:
         PmergeMe();
         ~PmergeMe();
+        PmergeMe(const PmergeMe &other);
+        PmergeMe &operator=(const PmergeMe &other);
+
 
         int getSize() const;
         void setSize(int size);

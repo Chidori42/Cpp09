@@ -1,6 +1,6 @@
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 SRCS =  main.cpp\
- 		BitcoinExchange.cpp\
+ 		BitcoinExchange.cpp
 
 NAME = btc
 

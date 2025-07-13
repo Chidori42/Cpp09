@@ -4,6 +4,15 @@ Data::Data(){
 }
 Data::~Data(){
 }
+Data::Data(const Data &other){
+    this->array = other.array;
+}
+Data &Data::operator=(const Data &other){
+    if (this != &other){
+        this->array = other.array;
+    }
+    return (*this);
+}
 std::string Data::trimString(std::string str) {
     str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
     return (str);
@@ -87,7 +96,7 @@ void Data::compareData(std::string inputFile){
             std::cout << "Error: not a positive number." << std::endl;
             continue;
         }
-        else if(number > __INT_MAX__){
+        else if(number > 1000){
             std::cout << "Error: too large a number." << std::endl;
             continue;
         }

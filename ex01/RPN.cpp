@@ -6,6 +6,17 @@ RPN::RPN(){
 RPN::~RPN(){
     
 }
+RPN::RPN(const RPN &other){
+    this->mystack = other.mystack;
+}
+
+RPN &RPN::operator=(const RPN &other)
+{
+    if (this != &other){
+        this->mystack = other.mystack;
+    }
+    return (*this);
+}
 std::stack<int> RPN::getMystack() const{
     return (this->mystack);
 }

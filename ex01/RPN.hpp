@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <climits>
 #include <sstream>
 #include <stack>
 
@@ -12,6 +13,9 @@ class RPN{
     public:
         RPN();
         ~RPN();
+        RPN(const RPN &other);
+
+        RPN &operator=(const RPN &other);
         
         std::stack<int> getMystack() const;
         int clculateValue(std::string &input);
