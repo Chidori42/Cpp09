@@ -65,6 +65,19 @@ void PmergeMe::sortVectorPairs(void){
         }
     }
 }
+
+void PmergeMe::makePairs(){
+    std::vector<int>::iterator it;
+    for (size_t i = 0; (i + 1) < this->tmp_rray.size(); i += 2){ 
+        this->v_array.push_back(std::make_pair(this->tmp_rray[i], this->tmp_rray[i + 1]));
+        this->d_array.push_back(std::make_pair(this->tmp_rray[i], this->tmp_rray[i + 1]));
+    }
+    if ((this->tmp_rray.size() % 2))
+    {
+        this->v_array.push_back(std::make_pair(this->tmp_rray[this->tmp_rray.size() - 1], LONG_MAX));
+        this->d_array.push_back(std::make_pair(this->tmp_rray[this->tmp_rray.size() - 1], LONG_MAX));
+    }
+}
 bool PmergeMe::checkInteger(std::vector<std::string> vec){
     for (size_t i = 0; (i + 1) < vec.size(); i += 2)
     {
@@ -80,8 +93,8 @@ bool PmergeMe::checkInteger(std::vector<std::string> vec){
         if (first < 0 || second < 0){
             return (1);
         }
-        this->v_array.push_back(std::make_pair(first, second));
-        this->d_array.push_back(std::make_pair(first, second));
+        this->tmp_rray.push_back(first);
+        this->tmp_rray.push_back(second);
         setSize(getSize() + 2);
     }
     if ((vec.size() % 2))
@@ -94,10 +107,10 @@ bool PmergeMe::checkInteger(std::vector<std::string> vec){
         if (last < 0){
             return (1);
         }
-        this->v_array.push_back(std::make_pair(last, LONG_MAX));
-        this->d_array.push_back(std::make_pair(last, LONG_MAX));
+        this->tmp_rray.push_back(last);
         setSize(getSize() + 1);
     }
+    
     return (0);
 }
 
@@ -159,20 +172,21 @@ void PmergeMe::vectorMergeSort(int left, int right){
     vectorMerge(left, middel, right);
 }
 
-void binaryInsert(std::vector<int>& main_chain, int value) {
-    std::vector<int>::iterator it = std::lower_bound(main_chain.begin(), main_chain.end(), value);
-    main_chain.insert(it, value);
-}
-
-int PmergeMe::getIndex(int k) {
-    return ((std::pow(2, k) + 1 + std::pow(-1, k)) / 3);
+int PmergeMe::Jacobsthal(int k) {
+    if (k == 0) {
+        return 0;
+    } else if (k == 1) {
+        return 1;
+    } else {
+        return Jacobsthal(k - 1) + 2 * Jacobsthal(k - 2);
+    }
 }
 std::vector<int> PmergeMe::vectorJacobsthal(int size) {
     std::vector<int> indices;
     int k = 1;
 
     while (true) {
-        int index = getIndex(k);
+        int index = Jacobsthal(k);
 
         if (index >= size)
             break;
@@ -182,11 +196,16 @@ std::vector<int> PmergeMe::vectorJacobsthal(int size) {
     }
 
     std::reverse(indices.begin(), indices.end());
+
+    for (std::vector<int>::iterator it = indices.begin(); it != indices.end(); ++it){
+        std::cout << "it = " << *it << std::endl;
+    }
     return indices;
 }
 
 void PmergeMe::insertVectorNumber(std::vector<int>& main_chain, const std::vector<int>& pend_chain, int index){
     int value = pend_chain[index];
+    std::cout << "was here" << std::endl;
     std::vector<int>::iterator pos = std::lower_bound(main_chain.begin(), main_chain.end(), value);
     main_chain.insert(pos, value);
 }
@@ -202,6 +221,7 @@ void PmergeMe::vectorInsertSort(std::vector<int>& main_chain, std::vector<int>& 
     }
     for (std::size_t i = 0; i < pend_chain.size(); i++){
         if (std::find(indices.begin(), indices.end(), i) == indices.end()){
+            std::cout << "was here" << std::endl;
             insertVectorNumber(main_chain, pend_chain, i);
         }
     }
@@ -209,7 +229,7 @@ void PmergeMe::vectorInsertSort(std::vector<int>& main_chain, std::vector<int>& 
 
 void PmergeMe::Desplaytime(double time, std::size_t size){ 
     std::cout << "Time to process a range of " << size 
-        << " elements with std::[..] : " << std::fixed << std::setprecision(2) << time << " us" << std::endl;
+        << " elements with std::[..] : " << std::fixed << std::setprecision(5) << time << " us" << std::endl;
 }
 
 void PmergeMe::DesplayNumbers(std::string str){
@@ -259,12 +279,12 @@ void PmergeMe::DesplayNumbers(std::vector<int> arr, std::string str){
 void PmergeMe::vectorGenerate(PmergeMe &obj){
     clock_t start = clock(); 
     obj.sortVectorPairs();
-    obj.dequeMergeSort(0, obj.getVarray().size() - 1);
+    obj.vectorMergeSort(0, obj.getVarray().size() - 1);
     std::vector<int> largeNumbers = getVectorGreaters();
     std::vector<int> LowNumbers = getVectorLowest();
     obj.vectorInsertSort(largeNumbers, LowNumbers);
     clock_t end = clock();
-    double duration_us = static_cast<double>(end - start);
+    double duration_us = (static_cast<double>((end - start)) / CLOCKS_PER_SEC) * 1000000;
     obj.DesplayNumbers(largeNumbers, "After");
     Desplaytime(duration_us, getSize());
 }
@@ -399,7 +419,7 @@ std::deque<int> PmergeMe::dequeJacobsthal(int size){
     int k = 1;
 
     while (true) {
-        int index = getIndex(k);
+        int index = Jacobsthal(k);
 
         if (index >= size)
             break;
@@ -419,6 +439,6 @@ void PmergeMe::dequeGenerate(PmergeMe &obj){
     std::deque<int> LowNumbers = getDequeLowest();
     obj.dequeinsertSort(largeNumbers, LowNumbers);
     clock_t end = clock(); 
-    double duration_us = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000000;
+    double duration_us = static_cast<double>((end - start)) / CLOCKS_PER_SEC * 1000000;
     Desplaytime(duration_us, getSize());
 }

@@ -17,6 +17,7 @@ class PmergeMe{
     private:
         std::vector<std::pair<long, long> > v_array;
         std::deque<std::pair<long, long> > d_array;
+        std::vector<int> tmp_rray;
         int size;
     public:
         PmergeMe();
@@ -27,8 +28,9 @@ class PmergeMe{
 
         int getSize() const;
         void setSize(int size);
-        int getIndex(int k);
+        int Jacobsthal(int k);
         void Desplaytime(double, std::size_t);
+        void makePairs();
         void swapPairs(std::pair<long, long> &, std::pair<long, long> &);
         
         std::vector<std::pair<long, long> > getVarray() const;

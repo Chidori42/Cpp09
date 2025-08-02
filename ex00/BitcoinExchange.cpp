@@ -29,6 +29,9 @@ std::map<std::string, double> Data::getArray(){
 double Data::countAmount(double btc_price, double amount){
     return (btc_price * amount);
 }
+bool isLeapYear(int year){
+    return ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0));
+}
 void Data::divideString(std::string str, std::string &date, double &number){
     std::stringstream ss(str);
         int count = 0;
@@ -49,9 +52,9 @@ bool Data::InvalidDate(std::string date){
     int count = 0;
     char sep = '-';
     std::string divider;
-    double Year;
-    double Month;
-    double Day;
+    int Year;
+    int Month;
+    int Day;
     while (std::getline(ss, divider, sep)){
         if (count == 0){
             Year = toFloat(divider);
@@ -64,7 +67,14 @@ bool Data::InvalidDate(std::string date){
         }
         count++;
     }
-    if (Year < 0 || Month > 12 || Month < 1 || Day < 1 || Day > 31){
+    if (Month > 12 || Month < 1){
+        return (true);
+    }
+    int daysMonths[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    if (isLeapYear(Year)){
+        daysMonths[1] = 29;
+    }
+    if (Day < 1 || Day > daysMonths[(Month - 1)]){
         return (true);
     }
     return (false);

@@ -18,13 +18,14 @@ int main(int ac, char **av){
         PmergeMe obj;
         int i = 1;
         while (av[i]){
-            std::string input = av[i];
+            std::string input = av[i]; 
             std::vector<std::string> vec = split_input(input);
             if (obj.checkInteger(vec)){
                 throw "Error";
             }
             i++;
         }
+        obj.makePairs();
         obj.DesplayNumbers("Before");
         obj.vectorGenerate(obj);
         obj.dequeGenerate(obj);

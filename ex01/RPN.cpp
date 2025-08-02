@@ -26,10 +26,10 @@ bool isoperator(char c){
 void RPN::parsInput(std::string &input){
     for (std::size_t i = 0; i < input.length(); i++){
         if (!isdigit(input[i]) && !isspace(input[i]) && !isoperator(input[i])){
-            throw std::runtime_error("Invalid input");
+            throw std::runtime_error("");
         }
         else if (isoperator(input[i]) && isoperator(input[i + 1])){
-            throw std::runtime_error("Duplicate operator");
+            throw std::runtime_error("");
         }
     }
 }
@@ -40,7 +40,7 @@ int RPN::clculateValue(std::string &input){
     while (std::getline(ss, str, sep)){
         if (str == "+" || str == "-" || str == "*" || str == "/"){
             if (getMystack().size() < 2){
-                throw std::runtime_error("Invalid Operands");
+                throw std::runtime_error("");
             }
             double count = 0;
             char c = str[0];
@@ -57,21 +57,21 @@ int RPN::clculateValue(std::string &input){
                     count = secound_element * first_element; break;
                 case '/':
                     if (first_element == 0){
-                        throw std::runtime_error("Division by zero");
+                        throw std::runtime_error("");
                     }
                     count = secound_element / first_element; break;
                 default:
-                    throw std::runtime_error("Invalid syntax");
+                    throw std::runtime_error("");
             }
             if (count > INT_MAX || count < INT_MIN)
-                throw std::runtime_error("Overflow");
+                throw std::runtime_error("");
             mystack.push(count);
         }
         else
             mystack.push(std::atoi(str.c_str()));
     }
     if (mystack.size() != 1)
-        throw std::runtime_error("Invalid syntax");
+        throw std::runtime_error("");
     int result = mystack.top();
     mystack.pop();
     return (result);
