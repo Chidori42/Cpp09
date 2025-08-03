@@ -79,38 +79,19 @@ void PmergeMe::makePairs(){
     }
 }
 bool PmergeMe::checkInteger(std::vector<std::string> vec){
-    for (size_t i = 0; (i + 1) < vec.size(); i += 2)
+    for (size_t i = 0; i < vec.size(); i++)
     {
-        int first, second;
+        int number;
         std::istringstream iss1(vec[i]);
-        std::istringstream iss2(vec[i + 1]);
-        if (!(iss1 >> first) || !(iss1.eof())){
+        if (!(iss1 >> number) || !(iss1.eof())){
             return (1);
         }
-        if (!(iss2 >> second) || !(iss2.eof())){
+        if (number < 0){
             return (1);
         }
-        if (first < 0 || second < 0){
-            return (1);
-        }
-        this->tmp_rray.push_back(first);
-        this->tmp_rray.push_back(second);
-        setSize(getSize() + 2);
-    }
-    if ((vec.size() % 2))
-    {
-        int last;
-        std::istringstream iss_last(vec[vec.size() - 1]);
-        if (!(iss_last >> last) || !(iss_last.eof())){
-            return (1);
-        }
-        if (last < 0){
-            return (1);
-        }
-        this->tmp_rray.push_back(last);
+        this->tmp_rray.push_back(number);
         setSize(getSize() + 1);
     }
-    
     return (0);
 }
 
@@ -122,68 +103,16 @@ void PmergeMe::swapPairs(std::pair<long, long> &p1, std::pair<long, long> &p2){
     p2 = tmp;
 }
 
-void PmergeMe::vectorMerge(int left, int middle, int right) {
-    int number1 = middle - left + 1;
-    int number2 = right - middle;
-
-    std::vector<std::pair<long, long> > leftV(number1), rightV(number2);
-
-    for (int i = 0; i < number1; i++) {
-        leftV[i] = this->v_array[left + i];
-    }
-    for (int i = 0; i < number2; i++) {
-        rightV[i] = this->v_array[middle + 1 + i];
-    }
-
-    int i = 0, j = 0, k = left;
-
-    while (i < number1 && j < number2) {
-        if (leftV[i].first <= rightV[j].first) {
-            this->v_array[k] = leftV[i];
-            i++;
-        } else {
-            this->v_array[k] = rightV[j];
-            j++;
-        }
-        k++;
-    }
-
-    while (i < number1) {
-        this->v_array[k] = leftV[i];
-        i++;
-        k++;
-    }
-
-    while (j < number2) {
-        this->v_array[k] = rightV[j];
-        j++;
-        k++;
-    }
-}
-
-void PmergeMe::vectorMergeSort(int left, int right){
-    if (left >= right){
-        return ;
-    }
-    int middel = left + (right - left) / 2;
-
-    vectorMergeSort(left, middel);
-    vectorMergeSort(middel + 1, right);
-    vectorMerge(left, middel, right);
-}
-
 int PmergeMe::Jacobsthal(int k) {
-    if (k == 0) {
+    if (k == 0)
         return 0;
-    } else if (k == 1) {
+    else if (k == 1) 
         return 1;
-    } else {
-        return Jacobsthal(k - 1) + 2 * Jacobsthal(k - 2);
-    }
+    return Jacobsthal(k - 1) + 2 * Jacobsthal(k - 2);
 }
 std::vector<int> PmergeMe::vectorJacobsthal(int size) {
     std::vector<int> indices;
-    int k = 1;
+    int k = 2;
 
     while (true) {
         int index = Jacobsthal(k);
@@ -196,33 +125,35 @@ std::vector<int> PmergeMe::vectorJacobsthal(int size) {
     }
 
     std::reverse(indices.begin(), indices.end());
-
-    for (std::vector<int>::iterator it = indices.begin(); it != indices.end(); ++it){
-        std::cout << "it = " << *it << std::endl;
-    }
     return indices;
 }
 
 void PmergeMe::insertVectorNumber(std::vector<int>& main_chain, const std::vector<int>& pend_chain, int index){
     int value = pend_chain[index];
-    std::cout << "was here" << std::endl;
     std::vector<int>::iterator pos = std::lower_bound(main_chain.begin(), main_chain.end(), value);
     main_chain.insert(pos, value);
 }
 
 void PmergeMe::vectorInsertSort(std::vector<int>& main_chain, std::vector<int>& pend_chain) {
+    if (pend_chain.empty())
+        return;
+    
     int size = static_cast<int>(pend_chain.size());
-    std::vector<int> indices =  vectorJacobsthal(size - 1);
-    for (std::size_t i = 0; i < indices.size(); i++){
+    std::vector<int> indices = vectorJacobsthal(size);
+    std::vector<bool> inserted(size, false); 
+    
+    for (std::size_t i = 0; i < indices.size(); i++) {
         int index = indices[i];
-        if (index < size){
+        if (index < size && !inserted[index]) {
             insertVectorNumber(main_chain, pend_chain, index);
+            inserted[index] = true;
         }
     }
-    for (std::size_t i = 0; i < pend_chain.size(); i++){
-        if (std::find(indices.begin(), indices.end(), i) == indices.end()){
-            std::cout << "was here" << std::endl;
+    
+    for (int i = 0; i < size; i++) {
+        if (!inserted[i]) {
             insertVectorNumber(main_chain, pend_chain, i);
+            inserted[i] = true;
         }
     }
 }
@@ -248,13 +179,12 @@ void PmergeMe::DesplayNumbers(std::string str){
     else{
         int i;
         std::cout << str << ":";
-        for (i = 0; i <= 2; i++){
+        for (i = 0; i < 2; i++){
             std::cout << " " << getVarray()[i].first;
             if (getVarray()[i].second != LONG_MAX){
                 std::cout << " " << getVarray()[i].second;
             }
         }
-        std::cout << " " << getVarray()[i].first;
         std::cout << " [...]" << std::endl;
     }
 }
@@ -279,13 +209,14 @@ void PmergeMe::DesplayNumbers(std::vector<int> arr, std::string str){
 void PmergeMe::vectorGenerate(PmergeMe &obj){
     clock_t start = clock(); 
     obj.sortVectorPairs();
-    obj.vectorMergeSort(0, obj.getVarray().size() - 1);
-    std::vector<int> largeNumbers = getVectorGreaters();
-    std::vector<int> LowNumbers = getVectorLowest();
-    obj.vectorInsertSort(largeNumbers, LowNumbers);
+    std::vector<int> mainchain = getVectorGreaters();
+    std::vector<int> pendchain = getVectorLowest();
+    std::sort(mainchain.begin(), mainchain.end());
+    obj.vectorInsertSort(mainchain, pendchain);
     clock_t end = clock();
     double duration_us = (static_cast<double>((end - start)) / CLOCKS_PER_SEC) * 1000000;
-    obj.DesplayNumbers(largeNumbers, "After");
+    
+    obj.DesplayNumbers(mainchain, "After");
     Desplaytime(duration_us, getSize());
 }
 
@@ -322,56 +253,7 @@ void PmergeMe::sortDequePairs(void){
     }
 
 }
-void PmergeMe::dequeMerge(int left, int middle, int right) {
-    int number1 = middle - left + 1;
-    int number2 = right - middle;
 
-    std::deque<std::pair<long, long> > leftV(number1), rightV(number2);
-
-    for (int i = 0; i < number1; i++) {
-        leftV[i] = this->v_array[left + i];
-    }
-    for (int i = 0; i < number2; i++) {
-        rightV[i] = this->v_array[middle + 1 + i];
-    }
-
-    int i = 0, j = 0, k = left;
-
-    while (i < number1 && j < number2) {
-        if (leftV[i].first <= rightV[j].first) {
-            this->v_array[k] = leftV[i];
-            i++;
-        } else {
-            this->v_array[k] = rightV[j];
-            j++;
-        }
-        k++;
-    }
-
-    while (i < number1) {
-        this->v_array[k] = leftV[i];
-        i++;
-        k++;
-    }
-
-    while (j < number2) {
-        this->v_array[k] = rightV[j];
-        j++;
-        k++;
-    }
-}
-
-
-void PmergeMe::dequeMergeSort(int left, int right){
-    if (left >= right){
-        return ;
-    }
-    int middel = left + (right - left) / 2;
-
-    dequeMergeSort(left, middel);
-    dequeMergeSort(middel + 1, right);
-    dequeMerge(left, middel, right);
-}
 void PmergeMe::insertDequeNumber(std::deque<int> &main_chain, const std::deque<int> &pend_chain, int index){
     int value = pend_chain[index];
     std::deque<int>::iterator pos = std::lower_bound(main_chain.begin(), main_chain.end(), value);
@@ -434,10 +316,10 @@ std::deque<int> PmergeMe::dequeJacobsthal(int size){
 void PmergeMe::dequeGenerate(PmergeMe &obj){
     clock_t start = clock(); 
     obj.sortDequePairs();
-    obj.dequeMergeSort(0, obj.getDarray().size() - 1);
-    std::deque<int> largeNumbers = getDequeGreaters();
-    std::deque<int> LowNumbers = getDequeLowest();
-    obj.dequeinsertSort(largeNumbers, LowNumbers);
+    std::deque<int> mainchain = getDequeGreaters();
+    std::deque<int> pendchain = getDequeLowest();
+    std::sort(mainchain.begin(), mainchain.end());
+    obj.dequeinsertSort(mainchain, pendchain);
     clock_t end = clock(); 
     double duration_us = static_cast<double>((end - start)) / CLOCKS_PER_SEC * 1000000;
     Desplaytime(duration_us, getSize());

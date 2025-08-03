@@ -43,8 +43,6 @@ class PmergeMe{
         std::vector<int> getVectorLowest();
         std::vector<int> getVectorGreaters();
         std::vector<int> vectorJacobsthal(int);
-        void vectorMerge(int, int, int);
-        void vectorMergeSort(int, int);
         void vectorGenerate(PmergeMe &obj);
 
 
@@ -56,8 +54,6 @@ class PmergeMe{
         std::deque<int> getDequeLowest();
         std::deque<int> getDequeGreaters();
         std::deque<int> dequeJacobsthal(int);
-        void dequeMerge(int, int, int);
-        void dequeMergeSort(int, int);
         void dequeGenerate(PmergeMe &obj);
         
 };
