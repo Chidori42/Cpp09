@@ -22,7 +22,7 @@ int main(int ac, char **av){
         int res = OBJ.clculateValue(input);
         std::cout << res << std::endl;
     }catch (std::exception const &e){
-        std::cerr << "Error" << e.what() << std::endl;
+        std::cerr << e.what() << std::endl;
     }
 }
         

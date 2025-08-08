@@ -26,10 +26,10 @@ bool isoperator(char c){
 void RPN::parsInput(std::string &input){
     for (std::size_t i = 0; i < input.length(); i++){
         if (!isdigit(input[i]) && !isspace(input[i]) && !isoperator(input[i])){
-            throw std::runtime_error("");
+            throw std::runtime_error("Error");
         }
         else if (isoperator(input[i]) && isoperator(input[i + 1])){
-            throw std::runtime_error("");
+            throw std::runtime_error("Error");
         }
     }
 }
@@ -40,7 +40,7 @@ int RPN::clculateValue(std::string &input){
     while (std::getline(ss, str, sep)){
         if (str == "+" || str == "-" || str == "*" || str == "/"){
             if (getMystack().size() < 2){
-                throw std::runtime_error("");
+                throw std::runtime_error("Error");
             }
             double count = 0;
             char c = str[0];
@@ -57,21 +57,21 @@ int RPN::clculateValue(std::string &input){
                     count = secound_element * first_element; break;
                 case '/':
                     if (first_element == 0){
-                        throw std::runtime_error("");
+                        throw std::runtime_error("Error");
                     }
                     count = secound_element / first_element; break;
                 default:
-                    throw std::runtime_error("");
+                    throw std::runtime_error("Error");
             }
             if (count > INT_MAX || count < INT_MIN)
-                throw std::runtime_error("");
+                throw std::runtime_error("Error");
             mystack.push(count);
         }
         else
             mystack.push(std::atoi(str.c_str()));
     }
     if (mystack.size() != 1)
-        throw std::runtime_error("");
+        throw std::runtime_error("Error");
     int result = mystack.top();
     mystack.pop();
     return (result);
