@@ -31,6 +31,7 @@ class PmergeMe{
         int Jacobsthal(int k);
         void Desplaytime(double, std::size_t);
         void makePairs();
+
         void swapPairs(std::pair<long, long> &, std::pair<long, long> &);
         
         std::vector<std::pair<long, long> > getVarray() const;
@@ -43,6 +44,8 @@ class PmergeMe{
         std::vector<int> getVectorLowest();
         std::vector<int> getVectorGreaters();
         std::vector<int> vectorJacobsthal(int);
+        void vectorMerge(int left, int middle, int right);
+        void vectorMergeSort(int left, int right);
         void vectorGenerate(PmergeMe &obj);
 
 
@@ -54,6 +57,8 @@ class PmergeMe{
         std::deque<int> getDequeLowest();
         std::deque<int> getDequeGreaters();
         std::deque<int> dequeJacobsthal(int);
+        void dequeMerge(int left, int middle, int right);
+        void dequeMergeSort(int left, int right);
         void dequeGenerate(PmergeMe &obj);
         
 };
