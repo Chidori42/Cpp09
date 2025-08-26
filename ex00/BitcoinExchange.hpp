@@ -8,6 +8,7 @@
 #include <algorithm> 
 #include <string>
 #include <map>
+#include <stdlib.h>
 class Data{
     private:
         std::map<std::string, double> array;
@@ -18,14 +19,13 @@ class Data{
 
         Data &operator=(const Data &other);
 
-        
         std::map<std::string, double>getArray();
         void setArray(std::ifstream &server);
 
         std::string trimString(std::string str);
-        double toFloat(const std::string& str);
+        double toFloat(const std::string str);
         double countAmount(double btc_price, double amount);
-        void divideString(std::string str, std::string &date, double &number);
+        bool divideString(std::string str, std::string &date, double &number);
         bool InvalidDate(std::string date);
         void DisplayData(std::string date, double amount, double res);
         void compareData(std::string inputFile);

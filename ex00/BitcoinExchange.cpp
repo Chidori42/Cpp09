@@ -17,11 +17,16 @@ std::string Data::trimString(std::string str) {
     str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
     return (str);
 }
-double Data::toFloat(const std::string& str) {
-    std::istringstream iss(str);
-    double result;
-    iss >> result;
-    return result;
+
+double Data::toFloat(const std::string str) {
+    char *endp = NULL;
+    double result = strtod(str.c_str(), &endp);
+
+    std::string v = "exchange_rate";
+    if (strlen(endp) == 0 || str == v){
+        return result;
+    }
+    throw std::runtime_error("");
 }
 std::map<std::string, double> Data::getArray(){
     return (this->array);
@@ -32,11 +37,22 @@ double Data::countAmount(double btc_price, double amount){
 bool isLeapYear(int year){
     return ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0));
 }
-void Data::divideString(std::string str, std::string &date, double &number){
-    std::stringstream ss(str);
-        int count = 0;
+int countCharacter(std::string str, char c){
+    int res = 0;
+    for (size_t i = 0; i < str.length(); i++)
+    {
+        if (str[i] == c){
+            res++;
+        }
+    }
+    return res;
+}
+bool Data::divideString(std::string str, std::string &date, double &number){
+    try{
+        std::stringstream ss(str);
         char sep = '|';
         std::string divider;
+        int count = 0;
         while (std::getline(ss, divider, sep)){
             if (count == 0){
                 date = trimString(divider);
@@ -46,6 +62,12 @@ void Data::divideString(std::string str, std::string &date, double &number){
             }
             count++;
         }
+        if (countCharacter(str, '|') > 1)
+            throw std::runtime_error("");
+    }catch (std::exception &e){
+        return (false);
+    }
+    return (true);
 }
 bool Data::InvalidDate(std::string date){
     std::stringstream ss(date);
@@ -97,11 +119,10 @@ void Data::compareData(std::string inputFile){
     while (std::getline(File, line)){
         std::string date;
         double number;
-        divideString(line, date, number);
-        if (InvalidDate(date)){
+        if (!divideString(line, date, number) || InvalidDate(date)){
             std::cout << "Error: bad input => " << date << std::endl;
             continue;
-        }
+        }    
         else if (number < 0){
             std::cout << "Error: not a positive number." << std::endl;
             continue;
@@ -113,11 +134,11 @@ void Data::compareData(std::string inputFile){
         std::map<std::string, double>::iterator it = array.lower_bound(date);
         if (it != array.end()) {
             if (it->first == date)
-                DisplayData(it->first, number, countAmount(it->second, number));
+                DisplayData(date, number, countAmount(it->second, number));
             else if (it != array.begin())
             {
                 --it;
-                DisplayData(it->first, number, countAmount(it->second, number));
+                DisplayData(date, number, countAmount(it->second, number));
             }
             else
                 std::cout << "Error: no btc yet in this date" << std::endl;

@@ -262,7 +262,6 @@ void PmergeMe::vectorGenerate(PmergeMe &obj){
     obj.vectorMergeSort(0, getVarray().size() - 1);
     std::vector<int> mainchain = getVectorGreaters();
     std::vector<int> pendchain = getVectorLowest();
-    // std::sort(mainchain.begin(), mainchain.end());
     obj.vectorInsertSort(mainchain, pendchain);
     clock_t end = clock();
     double duration_us = (static_cast<double>((end - start)) / CLOCKS_PER_SEC) * 1000000;
@@ -418,9 +417,9 @@ std::deque<int> PmergeMe::dequeJacobsthal(int size){
 void PmergeMe::dequeGenerate(PmergeMe &obj){
     clock_t start = clock(); 
     obj.sortDequePairs();
+    obj.dequeMergeSort(0, getDarray().size() - 1);
     std::deque<int> mainchain = getDequeGreaters();
     std::deque<int> pendchain = getDequeLowest();
-    std::sort(mainchain.begin(), mainchain.end());
     obj.dequeinsertSort(mainchain, pendchain);
     clock_t end = clock(); 
     double duration_us = static_cast<double>((end - start)) / CLOCKS_PER_SEC * 1000000;
