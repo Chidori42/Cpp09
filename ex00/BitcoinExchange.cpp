@@ -132,18 +132,22 @@ void Data::compareData(std::string inputFile){
             continue;
         }
         std::map<std::string, double>::iterator it = array.lower_bound(date);
-        if (it != array.end()) {
+        if (it == array.begin()){
+            if (it->first == date){
+                DisplayData(date, number, countAmount(it->second, number));
+            }
+            else{
+                std::cout << "Error: no btc yet in this date" << std::endl;
+            }
+        }
+        else{
             if (it->first == date)
                 DisplayData(date, number, countAmount(it->second, number));
-            else if (it != array.begin())
+            else
             {
                 --it;
                 DisplayData(date, number, countAmount(it->second, number));
             }
-            else
-                std::cout << "Error: no btc yet in this date" << std::endl;
-        } else {
-            std::cout << "Error: no earlier date found" << std::endl;    
         }
     }
 }
