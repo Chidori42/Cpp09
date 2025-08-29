@@ -69,7 +69,21 @@ bool Data::divideString(std::string str, std::string &date, double &number){
     }
     return (true);
 }
+
+int checkDate(std::string str){
+    int i = 0;
+    int count = 0;
+    while (str[i]){
+        if (str[i] == '-')
+            count++;
+        i++;
+    }
+    return (count);
+}
 bool Data::InvalidDate(std::string date){
+
+    if (checkDate(date) > 2)
+        return (true);
     std::stringstream ss(date);
     int count = 0;
     char sep = '-';
