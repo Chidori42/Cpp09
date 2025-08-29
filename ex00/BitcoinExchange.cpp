@@ -82,35 +82,39 @@ int checkDate(std::string str){
 }
 bool Data::InvalidDate(std::string date){
 
-    if (checkDate(date) > 2)
-        return (true);
-    std::stringstream ss(date);
-    int count = 0;
-    char sep = '-';
-    std::string divider;
-    int Year;
-    int Month;
-    int Day;
-    while (std::getline(ss, divider, sep)){
-        if (count == 0){
-            Year = toFloat(divider);
+    try{
+        if (checkDate(date) > 2)
+            throw std::runtime_error("");
+        std::stringstream ss(date);
+        int count = 0;
+        char sep = '-';
+        std::string divider;
+        int Year;
+        int Month;
+        int Day;
+        while (std::getline(ss, divider, sep)){
+            if (count == 0){
+                Year = toFloat(divider);
+            }
+            else if(count == 1){
+                Month = toFloat(divider);
+            } 
+            else if(count == 2){
+                Day = toFloat(divider);
+            }
+            count++;
         }
-        else if(count == 1){
-            Month = toFloat(divider);
-        } 
-        else if(count == 2){
-            Day = toFloat(divider);
+        if (Month > 12 || Month < 1){
+            throw std::runtime_error("");
         }
-        count++;
-    }
-    if (Month > 12 || Month < 1){
-        return (true);
-    }
-    int daysMonths[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    if (isLeapYear(Year)){
-        daysMonths[1] = 29;
-    }
-    if (Day < 1 || Day > daysMonths[(Month - 1)]){
+        int daysMonths[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        if (isLeapYear(Year)){
+            daysMonths[1] = 29;
+        }
+        if (Day < 1 || Day > daysMonths[(Month - 1)]){
+            throw std::runtime_error("");
+        }
+    }catch(std::exception &e){
         return (true);
     }
     return (false);
@@ -134,6 +138,7 @@ void Data::compareData(std::string inputFile){
         std::string date;
         double number;
         if (!divideString(line, date, number) || InvalidDate(date)){
+            
             std::cout << "Error: bad input => " << date << std::endl;
             continue;
         }    
@@ -188,8 +193,6 @@ void Data::setArray(std::ifstream &server){
             count++;
         }
         insertElemen(btc_date, toFloat(btc_price));
-        if (count > 2)
-            std::cout << "Invalid Separator" << " count = " << count<< std::endl;
     }
 }
 void Data::insertElemen(std::string str, double price){

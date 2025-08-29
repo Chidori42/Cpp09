@@ -2,14 +2,11 @@
 #define BITCOINEXCHANG_HPP
 
 #include <iostream>
-#include <cstring>
-#include <iomanip>
 #include <sstream>
 #include <fstream>
-#include <algorithm> 
+#include <algorithm>
 #include <string>
 #include <map>
-#include <stdlib.h>
 class Data{
     private:
         std::map<std::string, double> array;
