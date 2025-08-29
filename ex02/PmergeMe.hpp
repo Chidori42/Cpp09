@@ -30,11 +30,13 @@ class PmergeMe{
         void setSize(int size);
         int Jacobsthal(int k);
         void Desplaytime(double, std::size_t);
+        bool CheckDuplicate(void);
         void makePairs();
 
         void swapPairs(std::pair<long, long> &, std::pair<long, long> &);
         
         std::vector<std::pair<long, long> > getVarray() const;
+        int getVectorPartnerIndex(int number);
         bool checkInteger(std::vector<std::string>);
         void sortVectorPairs(void);
         void insertVectorNumber(std::vector<int>&, const std::vector<int>&, int);
@@ -50,6 +52,7 @@ class PmergeMe{
 
 
         std::deque<std::pair<long, long> > getDarray() const;
+        int getDequerPartnerIndex(int number);
         void dequeinsertSort(std::deque<int>& , const std::deque<int>& );
         void sortDequePairs(void);
         void insertDequeNumber(std::deque<int>&, const std::deque<int>&, int);

@@ -178,11 +178,32 @@ std::vector<int> PmergeMe::vectorJacobsthal(int size) {
     return indices;
 }
 
+int PmergeMe::getVectorPartnerIndex(int number){
+    for (size_t i = 0; i < this->v_array.size(); i++){
+        if (number == this->v_array[i].second){
+            return (this->v_array[i].first);
+        }
+    }
+    return (-1);
+}
+
 void PmergeMe::insertVectorNumber(std::vector<int>& main_chain, const std::vector<int>& pend_chain, int index){
     int value = pend_chain[index];
+    int partner = getVectorPartnerIndex(value);
+    if (partner != -1){
+        std::vector<int>::iterator it;
+        for (it = main_chain.begin(); it != main_chain.end(); ++it){
+            if (*it == partner){
+                std::vector<int>::iterator pos = std::lower_bound(main_chain.begin(), it, value);
+                main_chain.insert(pos, value);
+                return ;
+            }
+        }
+    }
     std::vector<int>::iterator pos = std::lower_bound(main_chain.begin(), main_chain.end(), value);
     main_chain.insert(pos, value);
 }
+
 
 void PmergeMe::vectorInsertSort(std::vector<int>& main_chain, std::vector<int>& pend_chain) {
     if (pend_chain.empty())
@@ -265,7 +286,6 @@ void PmergeMe::vectorGenerate(PmergeMe &obj){
     obj.vectorInsertSort(mainchain, pendchain);
     clock_t end = clock();
     double duration_us = (static_cast<double>((end - start)) / CLOCKS_PER_SEC) * 1000000;
-    
     obj.DesplayNumbers(mainchain, "After");
     Desplaytime(duration_us, getSize());
 }
@@ -304,8 +324,28 @@ void PmergeMe::sortDequePairs(void){
 
 }
 
-void PmergeMe::insertDequeNumber(std::deque<int> &main_chain, const std::deque<int> &pend_chain, int index){
+int PmergeMe::getDequerPartnerIndex(int number){
+    for (size_t i = 0; i < this->d_array.size(); i++){
+        if (number == this->d_array[i].second){
+            return (this->d_array[i].first);
+        }
+    }
+    return (-1);
+}
+
+void PmergeMe::insertDequeNumber(std::deque<int>& main_chain, const std::deque<int>& pend_chain, int index){
     int value = pend_chain[index];
+    int partner = getDequerPartnerIndex(value);
+    if (partner != -1){
+        std::deque<int>::iterator it;
+        for (it = main_chain.begin(); it != main_chain.end(); ++it){
+            if (*it == partner){
+                std::deque<int>::iterator pos = std::lower_bound(main_chain.begin(), it, value);
+                main_chain.insert(pos, value);
+                return ;
+            }
+        }
+    }
     std::deque<int>::iterator pos = std::lower_bound(main_chain.begin(), main_chain.end(), value);
     main_chain.insert(pos, value);
 }
@@ -421,7 +461,6 @@ void PmergeMe::dequeGenerate(PmergeMe &obj){
     std::deque<int> mainchain = getDequeGreaters();
     std::deque<int> pendchain = getDequeLowest();
     obj.dequeinsertSort(mainchain, pendchain);
-    clock_t end = clock(); 
-    double duration_us = static_cast<double>((end - start)) / CLOCKS_PER_SEC * 1000000;
+    double duration_us = static_cast<double>((clock() - start)) / CLOCKS_PER_SEC * 1000000;
     Desplaytime(duration_us, getSize());
 }

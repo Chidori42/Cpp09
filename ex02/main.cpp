@@ -1,5 +1,19 @@
 #include "PmergeMe.hpp"
 
+bool PmergeMe::CheckDuplicate(void){
+    int i = 0;
+    while (tmp_rray[i]){
+        int j = i + 1;
+        while (tmp_rray[j]){
+            if (tmp_rray[j] == tmp_rray[i]){
+                return (true);
+            }
+            j++;
+        }
+        i++;
+    }
+    return (false);
+}
 std::vector<std::string> split_input(std::string &input){
     std::stringstream ss(input);
 
@@ -25,6 +39,8 @@ int main(int ac, char **av){
             }
             i++;
         }
+        if (obj.CheckDuplicate())
+            throw "Error";
         obj.makePairs();
         obj.DesplayNumbers("Before");
         obj.vectorGenerate(obj);
